@@ -2,9 +2,7 @@
 
 import { faker } from '@faker-js/faker';
 
-describe("Central de Atendimento ao Cliente TAT", function () {
-  const user = {}
-
+describe("Central de Atendimento ao Cliente TAT", () => {
   beforeEach(() => {
     cy.visit(`./src/index.html`)
   })
@@ -26,9 +24,7 @@ describe("Central de Atendimento ao Cliente TAT", function () {
 
     it("exibe mensagem de erro ao submeter o formulário com um email com formatação inválida", () => {
       cy.get("#email").should("be.visible").type("carol")
-
       cy.get("button").click()
-
      cy.get(".error").should("have.text", "\n      Valide os campos obrigatórios!\n    ").should("be.visible");
     })
 
