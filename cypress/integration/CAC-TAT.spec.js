@@ -188,11 +188,7 @@ describe("Central de Atendimento ao Cliente TAT", () => {
     cy.contains("strong", "Mensagem enviada com sucesso.").should("be.visible")
   })
 
-  // it("xxx", () => {
-  //   cy.get('#file-upload').selectFile({
-  //     contents: 'cypress/fixtures/example.json',
-  //     fileName: 'exemple.json',
-  //   })
-  //   cy.get("#file-upload").should('include.text', 'exemple.json')
-  // })
+  it("verifica que a política de privacidade abre em outra aba sem a necessidade de um clique", () => {
+    cy.get('http://localhost:52553/src/privacy.html').should('have.attr', 'target', '_blank')
+  })
 })

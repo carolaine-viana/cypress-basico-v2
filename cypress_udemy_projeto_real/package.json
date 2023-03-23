@@ -1,0 +1,16 @@
+{
+  "name": "cypress_udemy_projeto_real",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^9.5.1"
+  },
+  "scripts": {
+    "cy:open": "cypress open",
+    "test": "cypress run"
+  },
+  "dependencies": {
+    "@cypress/xpath": "^2.0.3"
+  }
+}
