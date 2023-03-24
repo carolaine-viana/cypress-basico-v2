@@ -1,0 +1,37 @@
+const locators = {
+  login: {
+    USER: '[data-test="email"]',
+    PASSWORD: '[data-test="passwd"]',
+    BTN_LOGIN: '.btn'
+  },
+  MENU: {
+    HOME: '[data-test=menu-home]',
+    SETTINGS: '[data-test=menu-settings]',
+    ACCOUNT: '[href="/contas"]',
+    RESET: '[href="/reset"]',
+    TRANSACTIONS: '[data-test=menu-movimentacao]'
+  },
+  ACCOUNTS: {
+    NAME: '[data-test="nome',
+    BTN_SAVE: '.btn',
+    XP_BTN_UPDATE: (name) => `//td[contains(., '${name}')]/..//i[@class='far fa-edit']`
+  },
+  TRANSACTIONS: {
+    ACCOUNT: '[data-test=conta]',
+    DESCRIPTION: '[data-test=descricao]',
+    VALUE: 'input[title="Valor"]',
+    INVOLVED: '[data-test=envolvido]',
+    STATUS: '[data-test=status]',
+    BTN_SAVE: '.btn-primary',
+  },
+  EXTRACT: {
+    LINES: '.list-group > li',
+    FN_XP_SEARCHVALUE: (name, value) => `//span[contains(., '${name}')]/following-sibling::small[contains(., '${value}')]`
+  },
+  BALANCE: {
+    FN_XP_AMOUNT: (name) => `//td[contains(., '${name}')]/../td[2]`
+  },
+  MESSAGE: '.toast-message'
+}
+
+export default locators;
