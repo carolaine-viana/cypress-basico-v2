@@ -22,7 +22,9 @@ Cypress.Commands.add("getToken", (user, psw) => {
       redirecionar: false,
       senha: psw,
     },
-  }).its("body.token").should("not.be.empty")
+  })
+    .its("body.token")
+    .should("not.be.empty")
     .then((token) => {
       return token;
     });
@@ -34,9 +36,10 @@ Cypress.Commands.add("resetRest", (token) => {
     url: "/reset",
     headers: { Authorization: `JWT ${token}` },
     followRedirect: false,
-  }).its('status').should('be.equal', 200)
+  })
+    .its("status")
+    .should("be.equal", 200);
 });
-
 
 Cypress.Commands.add("getAccountByName", (token, name) => {
   cy.request({
@@ -44,11 +47,9 @@ Cypress.Commands.add("getAccountByName", (token, name) => {
     url: "/contas",
     headers: { Authorization: `JWT ${token}` },
     qs: {
-      nome: name
+      nome: name,
     },
-  }).then(res => {
-    if(res.body.id){
-      console.log('oi', res)
-    }
-  })
+  }).then((res) => {
+    return res.body[0].id;
+  });
 });

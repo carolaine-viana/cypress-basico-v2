@@ -32,17 +32,11 @@ describe("should teste at a functional level", () => {
   });
 
   it("should update an account", () => {
-    cy.request({
-      method: "GET",
-      url: "/contas",
-      headers: { Authorization: `JWT ${token}` },
-      qs: {
-        nome: "Conta para alterar",
-      },
-    }).then((res) => {
+    cy.getAccountByName(token, 'Conta para movimentacoes')
+    .then((id) => {
       cy.request({
         method: "PUT",
-        url: `contas/${res.body[0].id}`,
+        url: `contas/${id}`,
         headers: { Authorization: `JWT ${token}` },
         body: {
           nome: "conta alterada via rest",
@@ -61,7 +55,7 @@ describe("should teste at a functional level", () => {
       body: {
         nome: "Conta mesmo nome",
       },
-      failOnStatusCode: false //qnd ele ver nao vai falhar o teste vai deixar o teste seguir
+      failOnStatusCode: false
     }).as("response");
 
     cy.get("@response").then((res) => {
@@ -71,23 +65,15 @@ describe("should teste at a functional level", () => {
   });
 
   it.only("should create a transaction", () => {
-    //cy.getAccountByName(token, 'Conta para movimentacoes')
-    cy.request({
-      method: "GET",
-      url: "/contas",
-      headers: { Authorization: `JWT ${token}` },
-      qs: {
-        nome: "Conta para alterar",
-      },
-    })
-    .then(res => {
+    cy.getAccountByName(token, 'Conta para movimentacoes')
+    .then(id => {
       cy.request({
         method: "POST",
         url: "/transacoes",
         failOnStatusCode: false,
         headers: { Authorization: `JWT ${token}` },
         body: {
-          conta_id: res.body[0].id,
+          conta_id: `${id}`,
           data_pagamento: dayjs(new Date()).format('DD/MM/YYYY'),
           data_transacao: dayjs(new Date()).format('DD/MM/YYYY'),
           descricao: "desc",
