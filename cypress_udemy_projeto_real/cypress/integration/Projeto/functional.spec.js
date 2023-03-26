@@ -50,8 +50,9 @@ describe("should teste at a functional level", () => {
     cy.xpath(loc.BALANCE.FN_XP_AMOUNT('Conta alterada')).should('contain', '123,00')
   })
 
-  // it("remover movimentacao", () => {
-  //   cy.get('[data-test="menu-extrato"]').click()
-  //   cy.get(':nth-child(2) > .row > .col > [href="#"] > .far').click()
-  // })
+  it("should remove a transaction", () => {
+    cy.get(loc.MENU.EXTRACT).click()
+    cy.xpath(loc.EXTRACT.FN_XP_REMOVE_ELEMENT('Movimentacao para extrato')).click()
+    cy.get(loc.MESSAGE).should('contain', 'removida com sucesso')
+  })
 })
