@@ -28,7 +28,8 @@ const locators = {
   EXTRACT: {
     LINES: '.list-group > li',
     FN_XP_SEARCHVALUE: (name, value) => `//span[contains(., '${name}')]/following-sibling::small[contains(., '${value}')]`,
-    FN_XP_REMOVE_ELEMENT: (account) => `//span[contains(., '${account}')]/../../..//i[@class='far fa-trash-alt']`
+    FN_XP_REMOVE_ELEMENT: (account) => `//span[contains(., '${account}')]/../../..//i[@class='far fa-trash-alt']`,
+    FN_XP_EDIT_ELEMENT: (account) => `//span[contains(., '${account}')]/../../..//i[@class='fas fa-edit']`
   },
   BALANCE: {
     FN_XP_AMOUNT: (name) => `//td[contains(., '${name}')]/../td[2]`
