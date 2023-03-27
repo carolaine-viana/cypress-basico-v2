@@ -2,23 +2,18 @@
 import dayjs from "dayjs";
 
 describe("should teste at a functional level", () => {
-  let token;
-
   before(() => {
-    cy.getToken("carol@hotmail.com", "123").then((tkn) => {
-      token = tkn;
-    });
+    cy.getToken("carol@hotmail.com", "123");
   });
 
   beforeEach(() => {
-    cy.resetRest(token);
+    cy.resetRest();
   });
 
   it("should create an account", () => {
     cy.request({
       method: "POST",
       url: "/contas",
-      headers: { Authorization: `JWT ${token}` },
       body: {
         nome: "conta via rest",
       },
@@ -32,11 +27,10 @@ describe("should teste at a functional level", () => {
   });
 
   it("should update an account", () => {
-    cy.getAccountByName(token, "Conta para movimentacoes").then((id) => {
+    cy.getAccountByName("Conta para movimentacoes").then((id) => {
       cy.request({
         method: "PUT",
         url: `contas/${id}`,
-        headers: { Authorization: `JWT ${token}` },
         body: {
           nome: "conta alterada via rest",
         },
@@ -50,7 +44,6 @@ describe("should teste at a functional level", () => {
     cy.request({
       method: "POST",
       url: "/contas",
-      headers: { Authorization: `JWT ${token}` },
       body: {
         nome: "Conta mesmo nome",
       },
@@ -67,13 +60,12 @@ describe("should teste at a functional level", () => {
   });
 
   it("should create a transaction", () => {
-    cy.getAccountByName(token, "Conta para movimentacoes")
+    cy.getAccountByName("Conta para movimentacoes")
       .then((id) => {
         cy.request({
           method: "POST",
           url: "/transacoes",
           failOnStatusCode: false,
-          headers: { Authorization: `JWT ${token}` },
           body: {
             conta_id: `${id}`,
             data_pagamento: dayjs(new Date()).format("DD/MM/YYYY"),
@@ -96,7 +88,6 @@ describe("should teste at a functional level", () => {
       method: "GET",
       url: "/saldo",
       failOnStatusCode: false,
-      headers: { Authorization: `JWT ${token}` },
     }).then((res) => {
       let saldoConta = null;
       res.body.forEach((c) => {
@@ -105,33 +96,30 @@ describe("should teste at a functional level", () => {
       expect(saldoConta).to.be.equal("534.00");
     });
 
-    cy.getTransactionByName(token, "Movimentacao 1, calculo saldo").then(
-      (res) => {
-        cy.request({
-          method: "PUT",
-          url: `/transacoes/${res.id}`,
-          failOnStatusCode: false,
-          headers: { Authorization: `JWT ${token}` },
-          body: {
-            status: true,
-            data_transacao: dayjs(new Date()).format("DD/MM/YYYY"),
-            data_pagamento: dayjs(new Date()).format("DD/MM/YYYY"),
-            descricao: res.descricao,
-            envolvido: res.envolvido,
-            valor: res.valor,
-            conta_id: res.conta_id,
-          },
-        })
-          .its("status")
-          .should("be.equal", 200);
-      }
-    );
-    // //verificar se o saldo esta maior
+    cy.getTransactionByName("Movimentacao 1, calculo saldo").then((res) => {
+      cy.request({
+        method: "PUT",
+        url: `/transacoes/${res.id}`,
+        failOnStatusCode: false,
+        body: {
+          status: true,
+          data_transacao: dayjs(new Date()).format("DD/MM/YYYY"),
+          data_pagamento: dayjs(new Date()).format("DD/MM/YYYY"),
+          descricao: res.descricao,
+          envolvido: res.envolvido,
+          valor: res.valor,
+          conta_id: res.conta_id,
+        },
+      })
+        .its("status")
+        .should("be.equal", 200);
+    });
+    
+    //verificar se o saldo esta maior
     cy.request({
       method: "GET",
       url: "/saldo",
       failOnStatusCode: false,
-      headers: { Authorization: `JWT ${token}` },
     }).then((res) => {
       let saldoConta = null;
       res.body.forEach((c) => {
@@ -141,15 +129,17 @@ describe("should teste at a functional level", () => {
     });
   });
 
-  it.only("should remove a transaction", () => {
-    cy.getTransactionByName(token, "Movimentacao para exclusao")
-    .then((res) => {
-      cy.request({
-        method: "DELETE",
-        url: `/transacoes/${res.id}`,
-        failOnStatusCode: false,
-        headers: { Authorization: `JWT ${token}` },
+  it("should remove a transaction", () => {
+    cy.getTransactionByName("Movimentacao para exclusao")
+      .then((res) => {
+        console.log("re", res);
+        cy.request({
+          method: "DELETE",
+          url: `/transacoes/${res.id}`,
+          failOnStatusCode: false,
+        });
       })
-    }).its('status').should('be.equal', 204)
-  })
-})
+      .its("status")
+      .should("be.equal", 204);
+  });
+});
