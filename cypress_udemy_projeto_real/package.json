@@ -8,6 +8,7 @@
   },
   "scripts": {
     "cy:open": "cypress open",
+    "cypress:run": "cypress run",
     "test": "cypress run"
   },
   "dependencies": {

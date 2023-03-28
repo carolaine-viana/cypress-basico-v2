@@ -114,7 +114,6 @@ describe("should teste at a functional level", () => {
         .its("status")
         .should("be.equal", 200);
     });
-    
     //verificar se o saldo esta maior
     cy.request({
       method: "GET",
@@ -132,7 +131,6 @@ describe("should teste at a functional level", () => {
   it("should remove a transaction", () => {
     cy.getTransactionByName("Movimentacao para exclusao")
       .then((res) => {
-        console.log("re", res);
         cy.request({
           method: "DELETE",
           url: `/transacoes/${res.id}`,
